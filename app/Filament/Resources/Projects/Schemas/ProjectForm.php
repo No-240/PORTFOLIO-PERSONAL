@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Projects\Schemas;
 
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
@@ -15,24 +15,47 @@ class ProjectForm
         return $schema
             ->components([
                 TextInput::make('title')
-                    ->required(),
-                Textarea::make('description')
+                    ->label('Judul Project')
                     ->required()
-                    ->columnSpanFull(),
-                FileUpload::make('image')
-                    ->image(),
+                    ->maxLength(255),
+
                 TextInput::make('demo_url')
+                    ->label('Link Demo')
                     ->url()
-                    ->default(null),
+                    ->placeholder('https://')
+                    ->maxLength(255),
+
+                Textarea::make('description')
+                    ->label('Deskripsi Singkat')
+                    ->required()
+                    ->rows(4)
+                    ->columnSpanFull(),
+
+                FileUpload::make('image')
+                    ->label('Gambar / Screenshot')
+                    ->image()
+                    ->disk('public')
+                    ->directory('projects')
+                    ->visibility('public')
+                    ->helperText('Disarankan rasio 16:9 supaya tidak terpotong.')
+                    ->columnSpanFull(),
+
                 TextInput::make('repo_url')
+                    ->label('Link Repository (GitHub)')
                     ->url()
-                    ->default(null),
+                    ->placeholder('https://')
+                    ->maxLength(255),
+
                 TextInput::make('sort_order')
+                    ->label('Urutan')
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->helperText('Angka kecil tampil lebih dulu.'),
+
                 Toggle::make('is_published')
-                    ->required(),
+                    ->label('Tampilkan di website')
+                    ->default(true),
             ]);
     }
 }

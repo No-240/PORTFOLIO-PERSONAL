@@ -98,52 +98,25 @@
         </div>
     </section>
 
-    {{-- Teks berjalan --}}
-    @if ($skills->count())
-        <div class="overflow-hidden border-y border-slate-800 py-6" aria-hidden="true">
-            <div class="marquee-track flex w-max whitespace-nowrap">
-                @for ($i = 0; $i < 6; $i++)
-                    @foreach ($skills as $skill)
-                        <span class="px-6 text-4xl md:text-6xl font-extrabold uppercase"
-                            style="color: transparent; -webkit-text-stroke: 1px var(--stroke);">{{ $skill->name }}</span>
-                        <span class="px-6 text-4xl md:text-6xl text-blue-500">✦</span>
-                    @endforeach
-                @endfor
-            </div>
-        </div>
-    @endif
-
     {{-- About Me --}}
     <section id="about" class="max-w-6xl mx-auto px-6 py-28 md:py-32">
         <div class="grid items-center gap-16 md:grid-cols-2">
 
             {{-- Foto --}}
-            <div class="relative flex justify-center md:justify-start">
+            <div class="relative w-full max-w-sm md:max-w-md">
+                @php($aboutPhoto = $profile?->about_photo ?? $profile?->photo)
 
-                {{-- Cahaya biru di belakang foto --}}
-                <div
-                    class="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/20 blur-[100px]">
-                </div>
-
-                {{-- Aksen garis --}}
-                <div class="absolute left-4 top-8 h-[85%] w-px bg-blue-500/30"></div>
-
-                <div class="relative w-72 md:w-80">
-                    @php($aboutPhoto = $profile?->about_photo ?? $profile?->photo)
-
-                    @if ($aboutPhoto)
-                        <img
-                            src="{{ asset('storage/' . $aboutPhoto) }}"
-                            alt="{{ $profile?->name }}"
-                            class="relative z-10 h-[420px] w-full object-cover object-top grayscale-[15%]"
-                        >
-                    @else
-                        <div class="relative z-10 flex h-[420px] w-full items-center justify-center bg-slate-900 text-7xl font-bold text-slate-600">
-                            {{ strtoupper(substr($profile?->name ?? 'P', 0, 1)) }}
-                        </div>
-                    @endif
-                </div>
-
+                @if ($aboutPhoto)
+                    <img
+                        src="{{ asset('storage/' . $aboutPhoto) }}"
+                        alt="{{ $profile?->name }}"
+                        class="relative z-10 aspect-[4/5] w-full rounded-2xl border border-slate-800 object-cover object-top shadow-[0_0_60px_rgba(37,99,235,0.25)]"
+                    >
+                @else
+                    <div class="relative z-10 flex aspect-[4/5] w-full items-center justify-center rounded-2xl border border-slate-800 bg-slate-900 text-7xl font-bold text-slate-600">
+                        {{ strtoupper(substr($profile?->name ?? 'P', 0, 1)) }}
+                    </div>
+                @endif
             </div>
 
             {{-- Deskripsi --}}
